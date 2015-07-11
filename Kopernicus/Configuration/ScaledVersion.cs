@@ -53,6 +53,7 @@ namespace Kopernicus
             private GameObject scaledVersion;
             private CelestialBody owner;
             private StarComponent component;
+            private Sun sunComponent;
 
             // Type of object this body's scaled version is
             [PreApply]
@@ -180,6 +181,7 @@ namespace Kopernicus
 
                     // Add the Kopernicus star componenet
                     component = scaledVersion.AddComponent<StarComponent> ();
+                    sunComponent = scaledVersion.AddComponent<Star>();
 
                     // Generate a new material for the star
                     EmissiveMultiRampSunspotsLoader newMaterial = null;

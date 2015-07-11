@@ -98,6 +98,37 @@ namespace Kopernicus
         }
 
         /**
+         * Copy one objects properties to another object via reflection
+         * @param source Object to copy fields from
+         * @param destination Object to copy fields to
+         **/
+        public static void CopyObjectProperties<T>(T source, T destination, bool log = true)
+        {
+            // Reflection based copy
+            foreach (PropertyInfo field in (typeof(T)).GetProperties())
+            {
+                if (log)
+                {
+                    Logger.Active.Log("Copying \"" + field.Name + "\": " + (field.GetValue(destination, null) ?? "<NULL>") + " => " + (field.GetValue(source, null) ?? "<NULL>"));
+
+                }
+                field.SetValue(destination, field.GetValue(source, null), null);
+            }
+        }
+
+        /**
+         * Copy one object to another object via reflection
+         * @param source Object to copy fields from
+         * @param destination Object to copy fields to
+         **/
+        public static void CopyObject<T>(T source, T destination, bool log = true)
+        {
+            // Reflection based copy
+            CopyObjectFields<T>(source, destination, log);
+            CopyObjectProperties<T>(source, destination, log);
+        }
+
+        /**
          * Recursively searches for a named transform in the Transform heirarchy.  The requirement of
          * such a function is sad.  This should really be in the Unity3D API.  Transform.Find() only
          * searches in the immediate children.
