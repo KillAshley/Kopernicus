@@ -35,6 +35,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Kopernicus
 {
@@ -46,6 +47,9 @@ namespace Kopernicus
 
         public void Awake()
         {
+            // Create the Lensflare
+            sunFlare = gameObject.AddComponent<LensFlare>();
+
             // If we "are" Sun.Instance, save our data to Sun.Instance and kill us
             if (Sun.Instance != null)
             {
@@ -55,7 +59,15 @@ namespace Kopernicus
                     Utility.CopyObject<Sun>(this, Sun.Instance, false);
                     Destroy(this);
                 }
+                else
+                {
+                    // Copy the Lensflare from Sun.Instance
+                    Utility.CopyObject<LensFlare>(Sun.Instance.sunFlare, sunFlare, false);
+                }
             }
+
+            // Deactivate localSpaceLight for the moment, so that we can get LensFlares running
+            useLocalSpaceSunLight = false;
 
             // If the body-list works, get the CelestialBody reference
             if (PSystemManager.Instance.localBodies != null)
