@@ -92,7 +92,11 @@ namespace Kopernicus
                         Logger.Active.Log("Copying \"" + field.Name + "\": " + (field.GetValue(destination) ?? "<NULL>") + " => " + (field.GetValue(source) ?? "<NULL>"));
 
                     }
-                    field.SetValue(destination, field.GetValue(source));
+                    try
+                    {
+                        field.SetValue(destination, field.GetValue(source));
+                    }
+                    catch { }
                 }
             }
         }
@@ -112,7 +116,11 @@ namespace Kopernicus
                     Logger.Active.Log("Copying \"" + field.Name + "\": " + (field.GetValue(destination, null) ?? "<NULL>") + " => " + (field.GetValue(source, null) ?? "<NULL>"));
 
                 }
-                field.SetValue(destination, field.GetValue(source, null), null);
+                try
+                {
+                    field.SetValue(destination, field.GetValue(source, null), null);
+                }
+                catch { }
             }
         }
 

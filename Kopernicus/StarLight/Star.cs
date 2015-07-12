@@ -31,9 +31,11 @@
  * https://kerbalspaceprogram.com
  */
 
+using Kopernicus.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 
@@ -45,34 +47,69 @@ namespace Kopernicus
         // Name of the CelestialBody
         public string bodyName = "";
 
+        // Static backup of Sun.Instance to use it as a prefab
+        private static Sun sunInstance;
+
         public void Awake()
         {
-            // Create the Lensflare
-            sunFlare = gameObject.AddComponent<LensFlare>();
-
-            // If we "are" Sun.Instance, save our data to Sun.Instance and kill us
+            // If we "are" Sun.Instance, overwrite it with us
             if (Sun.Instance != null)
             {
                 if (Sun.Instance.sun.name == bodyName)
                 {
-                    // Copy our fields to Sun.Instance
-                    Utility.CopyObject<Sun>(this, Sun.Instance, false);
-                    Destroy(this);
+                    // Back up Sun.Instance for cloning purposes
+                    sunInstance = Sun.Instance;
+
+                    // Get it's data
+                    Utility.CopyObjectFields<Sun>(sunInstance, this, false);
+
+                    // Overwrite Sun.Instance
+                    Sun.Instance = this;
+
+                    // Add the light to fix PSystemSetup
+                    gameObject.AddComponent<Light>();
                 }
                 else
                 {
-                    // Copy the Lensflare from Sun.Instance
-                    Utility.CopyObject<LensFlare>(Sun.Instance.sunFlare, sunFlare, false);
+                    // Copy the Lensflare
+                    sunFlare = gameObject.AddComponent<LensFlare>();
+                    Utility.CopyObject<LensFlare>(sunInstance.sunFlare, sunFlare, false);
+
+                    // Copy the additional data from the prefab
+                    target = sunInstance.target;
+                    AU = sunInstance.AU;
+                    brightnessCurve = sunInstance.brightnessCurve;
+                    sunDirection = sunInstance.sunDirection;
+                    fadeStart = sunInstance.fadeStart;
+                    fadeEnd = sunInstance.fadeEnd;
                 }
             }
 
             // Deactivate localSpaceLight for the moment, so that we can get LensFlares running
             useLocalSpaceSunLight = false;
+        }
 
+        public void Update()
+        {
             // If the body-list works, get the CelestialBody reference
-            if (PSystemManager.Instance.localBodies != null)
+            if (PSystemManager.Instance.localBodies != null && sun == null)
             {
                 sun = PSystemManager.Instance.localBodies.Find(b => b.name == bodyName);
+            }
+        }
+
+        public void SunlightEnabled(bool state)
+        {
+            // Disable the Sunlight
+            if (light != null)
+            {
+                light.enabled = state;
+            }
+
+            // Disable the Lensflare
+            if (sunFlare != null)
+            {
+                sunFlare.enabled = state;
             }
         }
     }
