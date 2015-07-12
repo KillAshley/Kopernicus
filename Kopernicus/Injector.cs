@@ -164,7 +164,7 @@ namespace Kopernicus
             PlanetariumCamera.fetch.maxDistance = ((float)maximumDistance * 3.0f) / ScaledSpace.Instance.scaleFactor;
 
             // Select the closest star to home
-            StarLightSwitcher.HomeStar ().SetAsActive ();
+            //StarLightSwitcher.HomeStar ().SetAsActive ();
 
             // Declare we're done.
             Templates.loadFinished = true;

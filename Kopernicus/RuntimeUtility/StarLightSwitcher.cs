@@ -163,6 +163,7 @@ namespace Kopernicus
 
         void Update()
         {
+            return;
             StarComponent selectedStar = null;
         
             // If forceUpdate is enabled, update the active star
