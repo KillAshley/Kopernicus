@@ -96,18 +96,18 @@ namespace Kopernicus
             }
 
             // Reset the LightShifter
-            LightShifterComponent lsc = null;
-            LightShifterComponent[] comps = Sun.Instance.sun.GetTransform().GetComponentsInChildren<LightShifterComponent>(true);
+            LightData lsc = null;
+            LightData[] comps = Sun.Instance.sun.GetTransform().GetComponentsInChildren<LightData>(true);
             if (comps != null && comps.Length > 0)
             {
                 lsc = comps[0];
-                lsc.SetStatus(false, HighLogic.LoadedScene);
+                //lsc.SetStatus(false, HighLogic.LoadedScene);
             }
-            comps = celestialBody.GetTransform().GetComponentsInChildren<LightShifterComponent>(true);
+            comps = celestialBody.GetTransform().GetComponentsInChildren<LightData>(true);
             if (comps != null && comps.Length > 0)
             {
                 lsc = comps[0];
-                lsc.SetStatus(true, HighLogic.LoadedScene);
+                //lsc.SetStatus(true, HighLogic.LoadedScene);
 
                 // Set SunFlare color
                 Sun.Instance.sunFlare.color = lsc.sunLensFlareColor;

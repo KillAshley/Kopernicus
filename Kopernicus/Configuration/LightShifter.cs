@@ -44,102 +44,102 @@ namespace Kopernicus
         [RequireConfigType(ConfigType.Node)]
         public class LightShifter : IParserEventSubscriber
         {
-            public LightShifterComponent lsc;
+            public LightData data;
 
             // sunlightColor
             [ParserTarget("sunlightColor", optional = true, allowMerge = false)]
             public ColorParser sunlightColor
             {
-                set { lsc.sunlightColor = value.value; }
+                set { data.sunlightColor = value.value; }
             }
 
             // sunlightIntensity
             [ParserTarget("sunlightIntensity", optional = true, allowMerge = false)]
             public NumericParser<float> sunlightIntensity
             {
-                set { lsc.sunlightIntensity = value.value; }
+                set { data.sunlightIntensity = value.value; }
             }
 
             // sunlightShadowStrength
             [ParserTarget("sunlightShadowStrength", optional = true, allowMerge = false)]
             public NumericParser<float> sunlightShadowStrength
             {
-                set { lsc.sunlightShadowStrength = value.value; }
+                set { data.sunlightShadowStrength = value.value; }
             }
 
             // scaledSunlightColor
             [ParserTarget("scaledSunlightColor", optional = true, allowMerge = false)]
             public ColorParser scaledSunlightColor
             {
-                set { lsc.scaledSunlightColor = value.value; }
+                set { data.scaledSunlightColor = value.value; }
             }
 
             // scaledSunlightIntensity
             [ParserTarget("scaledSunlightIntensity", optional = true, allowMerge = false)]
             public NumericParser<float> scaledSunlightIntensity
             {
-                set { lsc.scaledSunlightIntensity = value.value; }
+                set { data.scaledSunlightIntensity = value.value; }
             }
 
             // IVASunColor
             [ParserTarget("IVASunColor", optional = true, allowMerge = false)]
             public ColorParser IVASunColor
             {
-                set { lsc.IVASunColor = value.value; }
+                set { data.IVASunColor = value.value; }
             }
 
             // IVASunIntensity
             [ParserTarget("IVASunIntensity", optional = true, allowMerge = false)]
             public NumericParser<float> IVASunIntensity
             {
-                set { lsc.IVASunIntensity = value.value; }
+                set { data.IVASunIntensity = value.value; }
             }
 
             // ambientLightColor
             [ParserTarget("ambientLightColor", optional = true, allowMerge = false)]
             public ColorParser ambientLightColor
             {
-                set { lsc.ambientLightColor = value.value; }
+                set { data.ambientLightColor = value.value; }
             }
 
             // sunBrightnessCurve
             [ParserTarget("sunBrightnessCurve", optional = true)]
             private AnimationCurveParser sunBrightnessCurve
             {
-                set { lsc.sunBrightnessCurve = value.curve; }
+                set { data.sunBrightnessCurve = value.curve; }
             }
 
             // Set the color that the star emits
             [ParserTarget("sunLensFlareColor", optional = true)]
             private ColorParser sunLensFlareColor
             {
-                set { lsc.sunLensFlareColor = value.value; }
+                set { data.sunLensFlareColor = value.value; }
             }
 
             // givesOffLight
             [ParserTarget("givesOffLight", optional = true, allowMerge = false)]
             public NumericParser<bool> givesOffLight
             {
-                set { lsc.givesOffLight = value.value; }
+                set { data.givesOffLight = value.value; }
             }
 
             // sunAU
             [ParserTarget("sunAU", optional = true, allowMerge = false)]
             public NumericParser<double> sunAU
             {
-                set { lsc.AU = value.value; }
+                set { data.AU = value.value; }
             }
 
             // brightnessCurve
             [ParserTarget("brightnessCurve", optional = true, allowMerge = false)]
             public FloatCurveParser brightnessCurve
             {
-                set { lsc.brightnessCurve = value.curve; }
+                set { data.brightnessCurve = value.curve; }
             }
 
             public LightShifter()
             {
-                lsc = LightShifterComponent.Instantiate(LightShifterComponent.LightSwitcherPrefab) as LightShifterComponent;
+                data = LightData.Instantiate(LightData.lightPrefab) as LightData;
             }
 
             // Apply event
@@ -150,124 +150,6 @@ namespace Kopernicus
             // Post apply event
             void IParserEventSubscriber.PostApply(ConfigNode node)
             {
-            }
-        }
-
-        public class LightShifterComponent : MonoBehaviour
-        {
-            public Color sunlightColor;
-            public float sunlightIntensity;
-            public float sunlightShadowStrength;
-            public Color scaledSunlightColor;
-            public float scaledSunlightIntensity;
-            public Color IVASunColor;
-            public float IVASunIntensity;
-            public Color ambientLightColor;
-            public AnimationCurve sunBrightnessCurve;
-            public Color sunLensFlareColor;
-            public bool givesOffLight = true;
-            public double AU;
-            public FloatCurve brightnessCurve;
-
-            private static LightShifterComponent prefab;
-
-            public static LightShifterComponent LightSwitcherPrefab
-            {
-                get
-                {
-                    if (prefab == null)
-                    {
-                        // If the prefab is null, create it
-                        GameObject prefabGOB = new GameObject("LightShifter");
-                        prefabGOB.transform.parent = Utility.Deactivator;
-                        prefab = prefabGOB.AddComponent<LightShifterComponent>();
-
-                        // Fill it with default values
-                        prefab.sunlightColor = Color.white;
-                        prefab.sunlightIntensity = 0.45f;
-                        prefab.sunlightShadowStrength = 0.7523364f;
-                        prefab.scaledSunlightColor = Color.white;
-                        prefab.scaledSunlightIntensity = 0.45f;
-                        prefab.IVASunColor = new Color(1.0f, 0.977f, 0.896f, 1.0f);
-                        prefab.IVASunIntensity = 0.34f;
-                        prefab.sunLensFlareColor = Color.white;
-                        prefab.ambientLightColor = new Color(0.06f, 0.06f, 0.06f, 1.0f);
-                        prefab.AU = 13599840256;
-                        prefab.brightnessCurve = new FloatCurve(new Keyframe[] 
-                        { 
-                            new Keyframe(-0.01573471f, 0.217353f, 1.706627f, 1.706627f),
-                            new Keyframe(5.084181f, 3.997075f, -0.001802375f, -0.001802375f),
-                            new Keyframe(38.56295f, 1.82142f, 0.0001713f, 0.0001713f)
-                        });
-                    }
-
-                    // Return the prefab
-                    return prefab;
-                }
-            }
-
-            private bool isActive = false;
-
-            public void SetStatus(bool status, GameScenes scene)
-            {
-                this.isActive = status;
-
-                if (isActive)
-                {
-                    SetActive(scene);
-                }
-            }
-
-            private void OnLevelWasLoaded(int loadedLevel)
-            {
-                if (isActive)
-                {
-                    SetActive((GameScenes)loadedLevel);
-                }
-            }
-
-            private void SetActive(GameScenes scene)
-            {
-                GameObject sunLight = GameObject.Find("SunLight");
-                GameObject scaledSunLight = GameObject.Find("Scaledspace SunLight");
-
-                if (sunLight && scaledSunLight)
-                {
-                    if (sunlightColor != null)
-                        sunLight.light.color = sunlightColor;
-
-                    if (sunlightIntensity != float.NaN)
-                        sunLight.light.intensity = sunlightIntensity;
-
-                    if (sunlightShadowStrength != float.NaN)
-                        sunLight.light.shadowStrength = sunlightShadowStrength;
-
-                    if (scaledSunlightColor != null)
-                        scaledSunLight.light.color = scaledSunlightColor;
-
-                    if (scaledSunlightIntensity != float.NaN)
-                        scaledSunLight.light.intensity = scaledSunlightIntensity;
-
-                    if (scene == GameScenes.FLIGHT)
-                    {
-                        GameObject IVASun = GameObject.Find("IVASun");
-
-                        if (IVASun)
-                        {
-                            if (IVASunColor != null)
-                                IVASun.light.color = IVASunColor;
-
-                            if (IVASunIntensity != float.NaN)
-                                IVASun.light.intensity = IVASunIntensity;
-                        }
-                    }
-
-                    DynamicAmbientLight ambientLight = FindObjectOfType(typeof(DynamicAmbientLight)) as DynamicAmbientLight;
-
-                    if (ambientLightColor != null && ambientLight)
-                        ambientLight.vacuumAmbientColor = ambientLightColor;
-
-                }
             }
         }
     }

@@ -181,7 +181,9 @@ namespace Kopernicus
 
                     // Add the Kopernicus star componenet
                     component = scaledVersion.AddComponent<StarComponent> ();
-                    sunComponent = scaledVersion.AddComponent<Star>();
+                    GameObject star = new GameObject("Star");
+                    star.transform.parent = scaledVersion.transform;
+                    sunComponent = star.AddComponent<Star>();
                     sunComponent.bodyName = owner.name;
 
                     // Generate a new material for the star
@@ -213,7 +215,7 @@ namespace Kopernicus
                 if (type.value == BodyType.Star) 
                 {
                     if (lightShifter != null)
-                        lightShifter.lsc.gameObject.transform.parent = owner.GetTransform();
+                        lightShifter.data.gameObject.transform.parent = sunComponent.gameObject.transform;
 
                     // Apply custom coronas
                     if (coronas.Count > 0) 
