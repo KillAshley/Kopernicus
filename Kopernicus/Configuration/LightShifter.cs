@@ -101,14 +101,7 @@ namespace Kopernicus
             {
                 set { data.ambientLightColor = value.value; }
             }
-
-            // sunBrightnessCurve
-            [ParserTarget("sunBrightnessCurve", optional = true)]
-            private AnimationCurveParser sunBrightnessCurve
-            {
-                set { data.sunBrightnessCurve = value.curve; }
-            }
-
+			
             // Set the color that the star emits
             [ParserTarget("sunLensFlareColor", optional = true)]
             private ColorParser sunLensFlareColor

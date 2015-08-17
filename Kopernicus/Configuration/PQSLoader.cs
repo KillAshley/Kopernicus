@@ -310,7 +310,20 @@ namespace Kopernicus
                 foreach (ConfigNode mod in node.GetNode ("Mods").nodes) 
                 {
                     Type loaderType = Type.GetType ("Kopernicus.Configuration.ModLoader." + mod.name);
-                    Type modType = Type.GetType ("PQSMod_" + mod.name + ", Assembly-CSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+                    if (loaderType == null)
+                    {
+                        foreach (AssemblyLoader.LoadedAssembly assembly in AssemblyLoader.loadedAssemblies)
+                        {
+                            foreach (Type type in assembly.assembly.GetExportedTypes())
+                            {
+                                if (type.ToString() == "Kopernicus.Configuration.ModLoader." + mod.name)
+                                {
+                                    loaderType = type;
+                                }
+                            }
+                        }
+                    }
+                    Type modType = Type.GetType ((mod.name != "LandControl" ? "PQSMod_" + mod.name : "PQSLandControl") + ", Assembly-CSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
 
                     // Do any PQS Mods already exist on this PQS matching this mod?
                     IEnumerable<PQSMod> existingMods = pqsVersion.GetComponentsInChildren<PQSMod>(true).Where(m => m.GetType().Equals(modType) && 
@@ -336,9 +349,14 @@ namespace Kopernicus
                         Logger.Active.Log ("PQSLoader.PostApply(ConfigNode): Added PQS Mod => " + modType);
                     }
 
-                    loader.mod.transform.parent = pqsVersion.transform;
-                    loader.mod.gameObject.layer = Constants.GameLayers.LocalSpace;
-                    loader.mod.sphere = pqsVersion;
+                    if (loader.mod != null)
+                    {
+                        loader.mod.transform.parent = pqsVersion.transform;
+                        loader.mod.gameObject.layer = Constants.GameLayers.LocalSpace;
+                        loader.mod.sphere = pqsVersion;
+                        if (loader.GetType() == typeof(ModLoader.LandControl))
+                            (loader as ModLoader.LandControl).SphereApply();
+                    }
                 }
             }
         }
