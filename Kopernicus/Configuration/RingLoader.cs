@@ -34,8 +34,8 @@
  */
 
 using System.Collections.Generic;
-
 using UnityEngine;
+using CompiledResources = Kopernicus.Properties.Resources;
 
 namespace Kopernicus
 {
@@ -44,6 +44,9 @@ namespace Kopernicus
         [RequireConfigType(ConfigType.Node)]
         public class RingLoader : IParserEventSubscriber
         {
+            // OrbitMaterial Render Queue
+            private const int ORBIT_LINES_RENDER = 3000;
+
             // Set-up our custom ring
             public Ring ring;
 
@@ -136,12 +139,12 @@ namespace Kopernicus
                     var eVert = Quaternion.Euler(0, i, 0) * StartVec;
 
                     //Inner Radius
-                    vertices.Add(eVert * (float)ring.innerRadius);
+                    vertices.Add(eVert * ((float)ring.innerRadius * (1f / ScaledPlanet.transform.localScale.x)));
                     Normals.Add(-Vector3.right);
                     Uvs.Add(new Vector2(0, 0));
 
                     //Outer Radius
-                    vertices.Add(eVert * (float)ring.outerRadius);
+                    vertices.Add(eVert * ((float)ring.outerRadius * (1f / ScaledPlanet.transform.localScale.x)));
                     Normals.Add(-Vector3.right);
                     Uvs.Add(new Vector2(1, 1));
                 }
@@ -151,12 +154,12 @@ namespace Kopernicus
                     var eVert = Quaternion.Euler(0, i, 0) * StartVec;
 
                     //Inner Radius
-                    vertices.Add(eVert * (float)ring.innerRadius);
+                    vertices.Add(eVert * ((float)ring.innerRadius * (1f / ScaledPlanet.transform.localScale.x)));
                     Normals.Add(-Vector3.right);
                     Uvs.Add(new Vector2(0, 0));
 
                     //Outer Radius
-                    vertices.Add(eVert * (float)ring.outerRadius);
+                    vertices.Add(eVert * ((float)ring.outerRadius * (1f / ScaledPlanet.transform.localScale.x)));
                     Normals.Add(-Vector3.right);
                     Uvs.Add(new Vector2(1, 1));
                 }
@@ -214,20 +217,19 @@ namespace Kopernicus
 
                 if (ring.unlit)
                 {
-                    Material material = new Material(Shaders.Shaders.UnlitNew);
+                    Material material = new Material(CompiledResources.UnlitNew);
                     RingRender.material = material;
                 }
                 else
                 {
-                    Material material = new Material(Shaders.Shaders.DiffuseNew);
+                    Material material = new Material(CompiledResources.DiffuseNew);
                     RingRender.material = material;
                 }
 
                 RingRender.material.mainTexture = ring.texture;
                 RingRender.material.color = ring.color;
 
-                RingRender.material.renderQueue = ScaledPlanet.renderer.material.renderQueue + 2;
-                ScaledPlanet.AddComponent<EVEFixer>().targetQueue = ScaledPlanet.renderer.material.renderQueue + 1;
+                RingRender.material.renderQueue = ORBIT_LINES_RENDER + 1;
 
                 RingObject.AddComponent<ReScaler>();
 

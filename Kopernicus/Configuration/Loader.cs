@@ -164,22 +164,15 @@ namespace Kopernicus
                 // Stage 5 - sort by distance from parent (discover how this effects local bodies)
                 RecursivelySortBodies (system.rootBody);
 
-                // Fix the flightGlobalsIndex for the bodies, force the values for Sun, Minmus, Kerbin and Mun
-                try
-                {
-                    int flightGlobalsIndex = 4;
-                    system.rootBody.flightGlobalsIndex = 0;
-                    bodies["Kerbin"].generatedBody.flightGlobalsIndex = 1;
-                    bodies["Mun"].generatedBody.flightGlobalsIndex = 2;
-                    bodies["Minmus"].generatedBody.flightGlobalsIndex = 3;
-                    foreach (Body body in bodies.Values.Where(b => b.name != "Kerbin" && b.name != "Minmus" && b.name != "Mun" && b.name != system.rootBody.name))
-                        body.generatedBody.flightGlobalsIndex = flightGlobalsIndex++;
-                }
-                catch { }
-
                 // Sets the SOI of the root-body to infinite
                 system.rootBody.celestialBody.sphereOfInfluence = Double.PositiveInfinity;
 
+                // Fix doubled flightGlobals
+                List<int> numbers = new List<int>() { 0 };
+                int index = bodies.Sum(b => b.Value.generatedBody.flightGlobalsIndex);
+                PatchFGI(ref numbers, ref index, system.rootBody);
+
+                // Return the System
                 return system;
             }
 
@@ -190,6 +183,18 @@ namespace Kopernicus
                 foreach (PSystemBody child in body.children) 
                 {
                     RecursivelySortBodies (child);
+                }
+            }
+
+            // Patch the FlightGlobalsIndex of bodies
+            private void PatchFGI(ref List<int> numbers, ref int index, PSystemBody rootBody)
+            {
+                foreach (PSystemBody body in rootBody.children)
+                {
+                    if (numbers.Contains(body.flightGlobalsIndex))
+                        body.flightGlobalsIndex = index++;
+                    numbers.Add(body.flightGlobalsIndex);
+                    PatchFGI(ref numbers, ref index, body);
                 }
             }
         }

@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{AA91123F-E3D2-4BC0-8BDB-F8B6CFDC6C10}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Kopernicus</RootNamespace>
@@ -34,12 +32,8 @@
       <HintPath>..\..\..\Programme\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Core">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\Programme\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -61,6 +55,8 @@
     <Compile Include="Configuration\ModLoader\VertexPlanet.cs" />
     <Compile Include="Configuration\HazardousOcean.cs" />
     <Compile Include="Configuration\ModLoader\VertexSimplexColorRGB.cs" />
+    <Compile Include="Configuration\Parser\External\ExternalParserTarget.cs" />
+    <Compile Include="Configuration\Parser\External\ExternalParserTargetLoader.cs" />
     <Compile Include="Configuration\Parser\ObjImporter.cs" />
     <Compile Include="Configuration\SpaceCenterSwitcher.cs" />
     <Compile Include="Configuration\LightShifter.cs" />
@@ -105,11 +101,6 @@
     <Compile Include="Configuration\ModLoader\VertexSimplexHeight.cs" />
     <Compile Include="Configuration\ParticleLoader.cs" />
     <Compile Include="Configuration\OceanPQS.cs" />
-    <Compile Include="Configuration\Resources\Shaders.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Shaders.resx</DependentUpon>
-    </Compile>
     <Compile Include="Configuration\RingLoader.cs" />
     <Compile Include="Constants\Version.cs" />
     <Compile Include="MaterialWrapper\AerialTransCutout.cs" />
@@ -118,6 +109,7 @@
     <Compile Include="MaterialWrapper\NormalBumped.cs" />
     <Compile Include="MaterialWrapper\NormalDiffuse.cs" />
     <Compile Include="MaterialWrapper\NormalDiffuseDetail.cs" />
+    <Compile Include="Properties\Resources\Resources.cs" />
     <Compile Include="RuntimeUtility\AtmosphereFixer.cs" />
     <Compile Include="RuntimeUtility\HiddenObjectUtils.cs" />
     <Compile Include="RuntimeUtility\MapViewFixer.cs" />
@@ -132,6 +124,7 @@
     <Compile Include="PostInject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MaterialWrapper\PQSOceanSurfaceQuad.cs" />
+    <Compile Include="RuntimeUtility\OceanUtility.cs" />
     <Compile Include="RuntimeUtility\RuntimeUtility.cs" />
     <Compile Include="Injector.cs" />
     <Compile Include="MaterialWrapper\PQSMainOptimised.cs" />
@@ -196,17 +189,11 @@
     <Compile Include="Configuration\ModLoader\VertexSimplexNoiseColor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\Resources\Shaders.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Shaders.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources\Bundles\ParticleCollider.unity3d" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DiffuseNew.txt" />
+    <EmbeddedResource Include="Properties\Resources\Shaders\DiffuseNew.txt" />
+    <EmbeddedResource Include="Properties\Resources\Shaders\UnlitNew.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\UnlitNew.txt" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
