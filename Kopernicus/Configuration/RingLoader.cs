@@ -34,8 +34,8 @@
  */
 
 using System.Collections.Generic;
-
 using UnityEngine;
+using CompiledResources = Kopernicus.Properties.Resources;
 
 namespace Kopernicus
 {
@@ -217,12 +217,12 @@ namespace Kopernicus
 
                 if (ring.unlit)
                 {
-                    Material material = new Material(Shaders.Shaders.UnlitNew);
+                    Material material = new Material(CompiledResources.UnlitNew);
                     RingRender.material = material;
                 }
                 else
                 {
-                    Material material = new Material(Shaders.Shaders.DiffuseNew);
+                    Material material = new Material(CompiledResources.DiffuseNew);
                     RingRender.material = material;
                 }
 

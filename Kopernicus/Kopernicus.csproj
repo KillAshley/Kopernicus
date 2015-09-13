@@ -101,11 +101,6 @@
     <Compile Include="Configuration\ModLoader\VertexSimplexHeight.cs" />
     <Compile Include="Configuration\ParticleLoader.cs" />
     <Compile Include="Configuration\OceanPQS.cs" />
-    <Compile Include="Configuration\Resources\Shaders.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Shaders.resx</DependentUpon>
-    </Compile>
     <Compile Include="Configuration\RingLoader.cs" />
     <Compile Include="Constants\Version.cs" />
     <Compile Include="MaterialWrapper\AerialTransCutout.cs" />
@@ -114,6 +109,7 @@
     <Compile Include="MaterialWrapper\NormalBumped.cs" />
     <Compile Include="MaterialWrapper\NormalDiffuse.cs" />
     <Compile Include="MaterialWrapper\NormalDiffuseDetail.cs" />
+    <Compile Include="Properties\Resources\Resources.cs" />
     <Compile Include="RuntimeUtility\AtmosphereFixer.cs" />
     <Compile Include="RuntimeUtility\HiddenObjectUtils.cs" />
     <Compile Include="RuntimeUtility\MapViewFixer.cs" />
@@ -191,17 +187,11 @@
     <Compile Include="Configuration\ModLoader\VertexSimplexNoiseColor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\Resources\Shaders.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Shaders.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources\Bundles\ParticleCollider.unity3d" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DiffuseNew.txt" />
+    <EmbeddedResource Include="Properties\Resources\Shaders\DiffuseNew.txt" />
+    <EmbeddedResource Include="Properties\Resources\Shaders\UnlitNew.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\UnlitNew.txt" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
