@@ -130,10 +130,6 @@ namespace Kopernicus
             [ParserTarget("Particle", optional = true, allowMerge = true)]
             private ParticleLoader particle;
 
-            // Sun
-            [ParserTarget("SolarPowerCurve", optional = true, allowMerge = false)]
-            private FloatCurveParser solarPowerCurve;
-
             // Wrapper around the settings for the SpaceCenter
             [ParserTarget("SpaceCenter", optional = true, allowMerge = true)]
             private SpaceCenterSwitcher spaceCenter;
@@ -343,19 +339,6 @@ namespace Kopernicus
                 foreach (RingLoader ring in rings)
                 {
                     RingLoader.AddRing(generatedBody.scaledVersion.gameObject, ring.ring);
-                }
-
-                // If this body is a star
-                if (scaledVersion.type.value == BodyType.Star) 
-                {
-                    // Get the Kopernicus star component from the scaled version
-                    StarComponent component = generatedBody.scaledVersion.GetComponent<StarComponent> ();
-
-                    // If we have defined a custom power curve, load it
-                    if (solarPowerCurve != null) 
-                    {
-                        component.powerCurve = solarPowerCurve.curve;
-                    }
                 }
                 
                 // If we're a barycenter

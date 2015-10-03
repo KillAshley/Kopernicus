@@ -59,7 +59,7 @@
     <Compile Include="Configuration\Parser\External\ExternalParserTargetLoader.cs" />
     <Compile Include="Configuration\Parser\ObjImporter.cs" />
     <Compile Include="Configuration\SpaceCenterSwitcher.cs" />
-    <Compile Include="Configuration\LightShifter.cs" />
+    <Compile Include="Configuration\StarDataLoader.cs" />
     <Compile Include="Configuration\ModLoader\MapDecalTangent.cs" />
     <Compile Include="Configuration\ModLoader\OceanFX.cs" />
     <Compile Include="Configuration\ModLoader\QuadEnhanceCoast.cs" />
@@ -134,8 +134,9 @@
     <Compile Include="MaterialWrapper\PQSProjectionSurfaceQuad.cs" />
     <Compile Include="MaterialWrapper\PQSProjectionAerialQuadRelative.cs" />
     <Compile Include="RuntimeUtility\SpaceCenterFixer.cs" />
-    <Compile Include="RuntimeUtility\StarLightSwitcher.cs" />
-    <Compile Include="StarLight\LightData.cs" />
+    <Compile Include="StarLight\KopernicusRadiator.cs" />
+    <Compile Include="StarLight\KopernicusSolarPanel.cs" />
+    <Compile Include="StarLight\StarData.cs" />
     <Compile Include="StarLight\Star.cs" />
     <Compile Include="Templates.cs" />
     <Compile Include="Utility.cs" />

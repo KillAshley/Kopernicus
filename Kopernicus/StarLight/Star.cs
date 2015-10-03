@@ -48,7 +48,7 @@ namespace Kopernicus
         private static Sun sunInstance;
 
         // Light Data for the new Sun
-        public LightData lightData;
+        public StarData data;
 
         // The actual Light for the new Sun
         public Light sunLight;
@@ -57,7 +57,7 @@ namespace Kopernicus
         public static List<Star> Stars { get; private set; }
 
         // Instance
-        public static Star Instance { get; set; }
+        public static new Star Instance { get; set; }
 
         public void Awake()
         {
@@ -76,7 +76,7 @@ namespace Kopernicus
                     sunInstance = Sun.Instance;
 
                     // Get it's data
-                    Utility.CopyObjectFields<Sun>(sunInstance, this, false);
+                    Utility.CopyObjectFields(sunInstance, this, false);
 
                     // Overwrite Sun.Instance
                     Sun.Instance = this;
@@ -91,17 +91,13 @@ namespace Kopernicus
                 else
                 {
                     // Copy the LensFlare
-                    LensFlare lensFlare = Instantiate(sunInstance.sunFlare) as LensFlare;
-                    DontDestroyOnLoad(lensFlare);
+                    sunFlare = Instantiate(sunInstance.sunFlare) as LensFlare;
+                    DontDestroyOnLoad(sunFlare);
 
                     // Restore Sun.Instance and destroy useless stuff
                     Sun.Instance = Star.Instance;
-                    DestroyImmediate(lensFlare.GetComponent<Sun>());
-                    DestroyImmediate(lensFlare.GetComponent<Light>());
-
-                    // Set the Lensflare
-                    sunFlare = lensFlare;
-                    sunFlare.color = Color.green;
+                    DestroyImmediate(sunFlare.GetComponent<Sun>());
+                    DestroyImmediate(sunFlare.GetComponent<Light>());
                         
                     // Copy the additional data from the prefab
                     target = sunInstance.target;
@@ -119,28 +115,10 @@ namespace Kopernicus
             // Add us to the Stars-List
             Stars.Add(this);
 
-            // Get the LightData from the GameObject hirarchy
-            lightData = gameObject.GetComponentInChildren<LightData>();
-
             // Set the first values
-            sunFlare.color = lightData.sunLensFlareColor;
-            brightnessCurve = lightData.brightnessCurve.Curve;
-            AU = lightData.AU;
-
-            // Activate the lights
-            // ApplyLight(lightData, light);
-        }
-
-        public void Start()
-        {
-            // Reparent the LensFlare to the new Star
-            sunFlare.transform.NestToParent(transform);
-        }
-
-        public void ApplyLight(LightData data, Light light)
-        {
-            light.color = lightData.scaledSunlightColor;
-            light.intensity = lightData.scaledSunlightIntensity;
+            sunFlare.color = data.sunLensFlareColor;
+            brightnessCurve = data.brightnessCurve.Curve;
+            AU = data.AU;
         }
 
         public void Update()
@@ -149,10 +127,11 @@ namespace Kopernicus
             if (PSystemManager.Instance.localBodies != null && sun == null)
             {
                 sun = PSystemManager.Instance.localBodies.Find(b => b.name == bodyName);
+                sunFlare.transform.parent = sun.transform;
             }
         }
 
-        public void SunlightEnabled(bool state)
+        public new void SunlightEnabled(bool state)
         {
             // If we are Sun.Instance, modify everything
             if (Sun.Instance == this)

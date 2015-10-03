@@ -52,7 +52,6 @@ namespace Kopernicus
             // Scaled representation of a planet for map view to modify
             private GameObject scaledVersion;
             private CelestialBody owner;
-            private StarComponent component;
             private Star sunComponent;
 
             // Type of object this body's scaled version is
@@ -74,9 +73,9 @@ namespace Kopernicus
                 set { scaledVersion.GetComponent<ScaledSpaceFader> ().fadeEnd = value.value; }
             }
 
-            // Create the Kopernicus LightShifter
-            [ParserTarget("SolarLightColor", optional = true)]
-            private LightShifter lightShifter;
+            // Create the Kopernicus StarDataLoader
+            [ParserTarget("StarData", optional = true)]
+            private StarDataLoader starData;
 
             // Coronas for a star's scaled version
             [ParserTargetCollection("Coronas", optional = true, nameSignificance = NameSignificance.None)]
@@ -179,8 +178,7 @@ namespace Kopernicus
                     if(scaledVersion.GetComponent<ScaledSun>() == null)
                         scaledVersion.AddComponent<ScaledSun>();
 
-                    // Add the Kopernicus star componenet
-                    component = scaledVersion.AddComponent<StarComponent> ();
+                    // Add the Kopernicus star component
                     GameObject star = new GameObject("Star");
                     star.transform.parent = scaledVersion.transform;
                     sunComponent = star.AddComponent<Star>();
@@ -214,8 +212,9 @@ namespace Kopernicus
                 // If we are a star, we need to generate the coronas 
                 if (type.value == BodyType.Star) 
                 {
-                    if (lightShifter != null)
-                        lightShifter.data.gameObject.transform.parent = sunComponent.gameObject.transform;
+                    // Apply the StarData
+                    if (starData != null)
+                        sunComponent.data = starData.data;
 
                     // Apply custom coronas
                     if (coronas.Count > 0) 

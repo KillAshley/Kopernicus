@@ -42,9 +42,9 @@ namespace Kopernicus
     namespace Configuration
     {
         [RequireConfigType(ConfigType.Node)]
-        public class LightShifter : IParserEventSubscriber
+        public class StarDataLoader : IParserEventSubscriber
         {
-            public LightData data;
+            public StarData data;
 
             // sunlightColor
             [ParserTarget("sunlightColor", optional = true, allowMerge = false)]
@@ -130,9 +130,16 @@ namespace Kopernicus
                 set { data.brightnessCurve = value.curve; }
             }
 
-            public LightShifter()
+            // powerCurve
+            [ParserTarget("powerCurve", optional = true)]
+            public FloatCurveParser powerCurve
             {
-                data = LightData.Instantiate(LightData.lightPrefab) as LightData;
+                set { data.powerCurve = value.curve; }
+            }
+
+            public StarDataLoader()
+            {
+                data = new StarData();
             }
 
             // Apply event
