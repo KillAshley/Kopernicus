@@ -68,6 +68,16 @@ namespace Kopernicus
                         powerCurve = null;
                     }
                 }
+                else
+                {
+                    useCurve = false;
+                    powerCurve = null;
+                }
+            }
+            else
+            {
+                // We're wrong here
+                return;
             }
 
             // Call base
