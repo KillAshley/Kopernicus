@@ -125,8 +125,7 @@ namespace Kopernicus
             return (Sun.Instance.sun == celestialBody);
         }
     }
-
-    [KSPAddon(KSPAddon.Startup.MainMenu, true)]
+    
     public class StarLightSwitcher : MonoBehaviour
     {
         // List of celestial bodies that are stars

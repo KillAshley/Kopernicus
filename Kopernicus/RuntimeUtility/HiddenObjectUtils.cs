@@ -38,7 +38,6 @@ using UnityEngine;
 
 namespace Kopernicus
 {
-    [KSPAddon(KSPAddon.Startup.MainMenu, false)]
     public class HiddenObjectUtils : MonoBehaviour
     {
         MapObject previousMap = null;

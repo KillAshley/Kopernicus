@@ -234,8 +234,7 @@ namespace Kopernicus
             cbDict = new Dictionary<string, CBNameChanger>();
         }
     }
-
-    [KSPAddon(KSPAddon.Startup.MainMenu, true)]
+    
     public class NameChangeRunner : MonoBehaviour
     {
         public void Awake()

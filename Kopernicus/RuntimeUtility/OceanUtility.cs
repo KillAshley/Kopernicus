@@ -8,7 +8,6 @@ namespace Kopernicus
 {
     // Class to replace the PartBuoyancy component of parts with our own implementation
     // TL;DR: Support for non-spherical oceans
-    [KSPAddon(KSPAddon.Startup.MainMenu, false)]
     public class OceanUtility : MonoBehaviour
     {
         void Awake()

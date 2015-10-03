@@ -35,16 +35,10 @@ using UnityEngine;
 
 namespace Kopernicus
 {
-    [KSPAddon(KSPAddon.Startup.MainMenu, false)]
     public class MainMenuChanger : MonoBehaviour
     {
+        // On Start, Update the Planets
         public void Start()
-        {
-            // On Start, Update the Planets
-            UpdateMenu();
-        }
-
-        public void UpdateMenu()
         {
             // Get the MainMenu-Logic
             MainMenu main = MainMenu.FindObjectOfType<MainMenu>();
@@ -104,10 +98,10 @@ namespace Kopernicus
             menuPlanet.transform.parent = space.transform;
 
             // Destroy stuff
-            MonoBehaviour.DestroyImmediate(menuPlanet.GetComponent<ScaledSpaceFader>());
-            MonoBehaviour.DestroyImmediate(menuPlanet.GetComponent<SphereCollider>());
-            MonoBehaviour.DestroyImmediate(menuPlanet.GetComponentInChildren<AtmosphereFromGround>());
-            MonoBehaviour.DestroyImmediate(menuPlanet.GetComponent<MaterialSetDirection>());
+            DestroyImmediate(menuPlanet.GetComponent<ScaledSpaceFader>());
+            DestroyImmediate(menuPlanet.GetComponent<SphereCollider>());
+            DestroyImmediate(menuPlanet.GetComponentInChildren<AtmosphereFromGround>());
+            DestroyImmediate(menuPlanet.GetComponent<MaterialSetDirection>());
 
             // That sounds funny
             Rotato planetRotato = menuPlanet.AddComponent<Rotato>();
@@ -165,10 +159,10 @@ namespace Kopernicus
                 menuMoon.transform.localScale *= 7f;
 
                 // Destroy stuff
-                MonoBehaviour.DestroyImmediate(menuMoon.GetComponent<ScaledSpaceFader>());
-                MonoBehaviour.DestroyImmediate(menuMoon.GetComponent<SphereCollider>());
-                MonoBehaviour.DestroyImmediate(menuMoon.GetComponentInChildren<AtmosphereFromGround>());
-                MonoBehaviour.DestroyImmediate(menuMoon.GetComponent<MaterialSetDirection>());
+                DestroyImmediate(menuMoon.GetComponent<ScaledSpaceFader>());
+                DestroyImmediate(menuMoon.GetComponent<SphereCollider>());
+                DestroyImmediate(menuMoon.GetComponentInChildren<AtmosphereFromGround>());
+                DestroyImmediate(menuMoon.GetComponent<MaterialSetDirection>());
 
                 // More Rotato
                 Rotato moonRotato = menuMoon.AddComponent<Rotato>();

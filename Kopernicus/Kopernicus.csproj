@@ -115,6 +115,7 @@
     <Compile Include="MaterialWrapper\NormalDiffuse.cs" />
     <Compile Include="MaterialWrapper\NormalDiffuseDetail.cs" />
     <Compile Include="RuntimeUtility\AtmosphereFixer.cs" />
+    <Compile Include="RuntimeUtility\MapExport.cs" />
     <Compile Include="RuntimeUtility\HiddenObjectUtils.cs" />
     <Compile Include="RuntimeUtility\MapViewFixer.cs" />
     <Compile Include="RuntimeUtility\MenuBodyChanger.cs" />

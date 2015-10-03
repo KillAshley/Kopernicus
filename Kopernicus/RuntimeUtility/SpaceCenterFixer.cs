@@ -41,7 +41,6 @@ using UnityEngine;
 
 namespace Kopernicus
 {
-    [KSPAddon(KSPAddon.Startup.EveryScene, false)]
     public class SpaceCenterFixer : MonoBehaviour
     {
         static public string pqsName = "Kerbin"; // will be changed to new homeworld in Injector.

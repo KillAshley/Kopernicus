@@ -36,23 +36,19 @@ using UnityEngine;
 
 namespace Kopernicus
 {
-    [KSPAddon(KSPAddon.Startup.EveryScene, false)]
     public class MapViewFixer : MonoBehaviour
     {
         static float  max3DlineDrawDist = 20000f;
 
         public void Start()
         {
-            if (HighLogic.LoadedSceneHasPlanetarium && MapView.fetch != null)
+            try
             {
-                try
-                {
-                    MapView.fetch.max3DlineDrawDist = max3DlineDrawDist;
-                }
-                catch (Exception e)
-                {
-                    Debug.Log("[Kopernicus]: MapView fixing failed: " + e.Message);
-                }
+                MapView.fetch.max3DlineDrawDist = max3DlineDrawDist;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Kopernicus]: MapView fixing failed: " + e.Message);
             }
         }
 
@@ -61,7 +57,7 @@ namespace Kopernicus
         // Fix the Zooming-Out bug
         public void LateUpdate()
         {
-            if (HighLogic.LoadedSceneHasPlanetarium && MapView.fetch != null && !isDone)
+            if (!isDone)
             {
                 // Fix the bug via switching away from Home and back immideatly. 
                 PlanetariumCamera.fetch.SetTarget(PlanetariumCamera.fetch.targets[(PlanetariumCamera.fetch.targets.IndexOf(PlanetariumCamera.fetch.target) + 1) % PlanetariumCamera.fetch.targets.Count]);

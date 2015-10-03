@@ -135,18 +135,10 @@ namespace Kopernicus
             }
         }
     }
-    [KSPAddon(KSPAddon.Startup.EveryScene, false)]
+
     public class AtmosphereFixer : MonoBehaviour
     {
         double timeCounter = 0d;
-        public void Start()
-        {
-            if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedScene == GameScenes.SPACECENTER)
-            {
-                return;
-            }
-            UnityEngine.Object.Destroy(this); // don't hang around.
-        }
         public void Update()
         {
             if (timeCounter < 0.5d)
