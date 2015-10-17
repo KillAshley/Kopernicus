@@ -153,45 +153,6 @@ namespace Kopernicus
                 particle.animator.colorAnimation = colors.ToArray();
             }
 
-            public class PlanetaryParticle : MonoBehaviour
-            {
-                public ParticleEmitter emitter;
-                public ParticleAnimator animator;
-                public ParticleRenderer Renderer;
-                public string target = "Sun";
-                public float speedScale = 0f;
-                public float minEmission, maxEmission;
-                public float minEnergy, maxEnergy;
-                public Vector3 randomVelocity;
-
-                public static PlanetaryParticle CreateInstance(GameObject body)
-                {
-                    PlanetaryParticle p = body.AddComponent<PlanetaryParticle>();
-                    p.emitter = (ParticleEmitter)body.AddComponent("MeshParticleEmitter");
-                    p.animator = body.AddComponent<ParticleAnimator>();
-                    p.Renderer = body.AddComponent<ParticleRenderer>();
-                    p.Renderer.material = new Material(Shader.Find("Particles/Alpha Blended"));
-                    p.emitter.useWorldSpace = false;
-                    p.animator.doesAnimateColor = true;
-                    DontDestroyOnLoad(p);
-                    return p;
-                }
-
-                public void Update()
-                {
-                    emitter.emit = true;
-                    Vector3 speed = ScaledSpace.Instance.scaledSpaceTransforms.Find(t => t.name == target).position;
-                    speed -= transform.position;
-                    speed *= speedScale;
-                    emitter.minEnergy = minEnergy / TimeWarp.CurrentRate;
-                    emitter.maxEnergy = maxEnergy / TimeWarp.CurrentRate;
-                    emitter.maxEmission = maxEmission * TimeWarp.CurrentRate;
-                    emitter.minEmission = minEmission * TimeWarp.CurrentRate;
-                    emitter.rndVelocity = randomVelocity * TimeWarp.CurrentRate;
-                    speed *= TimeWarp.CurrentRate;
-                    emitter.worldVelocity = speed;
-                }
-            }
         }
     }
 }

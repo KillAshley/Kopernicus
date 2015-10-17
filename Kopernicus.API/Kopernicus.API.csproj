@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kopernicus.API</RootNamespace>
+    <AssemblyName>Kopernicus.API</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectGuid>{90546830-3DF6-4365-AA36-45D17B758579}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Distribution\Development\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Distribution\Release\GameData\Kopernicus\Plugins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\References\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\HazardousOcean.cs" />
+    <Compile Include="Components\PlanetParticleEmitter.cs" />
+    <Compile Include="Enumerations\BodyTemplates.cs" />
+    <Compile Include="Enumerations\OceanTemplates.cs" />
+    <Compile Include="Enumerations\TerrainTemplates.cs" />
+    <Compile Include="Extensions\MonoBehaviourExtensions.cs" />
+    <Compile Include="Kopernicus.cs" />
+    <Compile Include="MaterialWrapper\AerialTransCutout.cs" />
+    <Compile Include="MaterialWrapper\AlphaTestDiffuse.cs" />
+    <Compile Include="MaterialWrapper\AtmosphereFromGround.cs" />
+    <Compile Include="MaterialWrapper\DiffuseWrap.cs" />
+    <Compile Include="MaterialWrapper\EmissiveMultiRampSunspots.cs" />
+    <Compile Include="MaterialWrapper\NormalBumped.cs" />
+    <Compile Include="MaterialWrapper\NormalDiffuse.cs" />
+    <Compile Include="MaterialWrapper\NormalDiffuseDetail.cs" />
+    <Compile Include="MaterialWrapper\ParticleAddSmooth.cs" />
+    <Compile Include="MaterialWrapper\PQSMainOptimised.cs" />
+    <Compile Include="MaterialWrapper\PQSMainShader.cs" />
+    <Compile Include="MaterialWrapper\PQSOceanSurfaceQuad.cs" />
+    <Compile Include="MaterialWrapper\PQSOceanSurfaceQuadFallback.cs" />
+    <Compile Include="MaterialWrapper\PQSProjectionAerialQuadRelative.cs" />
+    <Compile Include="MaterialWrapper\PQSProjectionFallback.cs" />
+    <Compile Include="MaterialWrapper\PQSProjectionSurfaceQuad.cs" />
+    <Compile Include="MaterialWrapper\ScaledPlanetRimAerial.cs" />
+    <Compile Include="MaterialWrapper\ScaledPlanetSimple.cs" />
+    <Compile Include="PQSMods\PQSMod_VertexHeightOblate.cs" />
+    <Compile Include="PQSMods\PQSMod_VertexHeightOffset.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Replacements\CelestialBody.cs" />
+    <Compile Include="Replacements\Ocean.cs" />
+    <Compile Include="Replacements\PQS.cs" />
+    <Compile Include="Replacements\PSystem.cs" />
+    <Compile Include="Replacements\PSystemManager.cs" />
+    <Compile Include="Resources\Shaders\Shaders.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Shaders\CompiledDiffuseZW.txt" />
+    <Content Include="Resources\Shaders\CompiledUnlitZW.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
