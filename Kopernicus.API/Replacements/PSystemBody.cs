@@ -34,7 +34,7 @@ using System.Linq;
 namespace Kopernicus
 {
     /// <summary>
-    /// The representation of a body in the PSystem - prefab
+    /// The representation of a body in the PSystem prefab
     /// </summary>
     public class PSystemBody : global::PSystemBody
     {
