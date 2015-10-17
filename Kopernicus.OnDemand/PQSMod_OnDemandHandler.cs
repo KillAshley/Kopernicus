@@ -1,13 +1,9 @@
 ﻿/**
  * Kopernicus Planetary System Modifier
  * ====================================
- * Created by: - Bryce C Schroeder (bryce.schroeder@gmail.com)
- * 			   - Nathaniel R. Lewis (linux.robotdude@gmail.com)
- * 
- * Maintained by: - Thomas P.
- * 				  - NathanKell
- * 
-* Additional Content by: Gravitasi, aftokino, KCreator, Padishar, Kragrathea, OvenProofMars, zengei, MrHappyFace
+ * Created by: BryceSchroeder and Teknoman117 (aka. Nathaniel R. Lewis)
+ * Maintained by: Thomas P., NathanKell and KillAshley
+ * Additional Content by: Gravitasi, aftokino, KCreator, Padishar, Kragrathea, OvenProofMars, zengei, MrHappyFace
  * ------------------------------------------------------------- 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +21,7 @@
  * MA 02110-1301  USA
  * 
  * This library is intended to be used as a plugin for Kerbal Space Program
- * which is copyright 2011-2014 Squad. Your usage of Kerbal Space Program
+ * which is copyright 2011-2015 Squad. Your usage of Kerbal Space Program
  * itself is governed by the terms of its EULA, not the license above.
  * 
  * https://kerbalspaceprogram.com
@@ -37,19 +33,22 @@ namespace Kopernicus
 {
     namespace OnDemand
     {
+        /// <summary>
+        /// PQSMod, to handle the state of OnDemand maps
+        /// </summary>
         public class PQSMod_OnDemandHandler : PQSMod
         {
-            // State
+            /// State
             private bool isLoaded = false;
 
-            // Disabling
+            /// Disabling
             public override void OnSphereInactive()
             {
-                // Don't update, if the Injector is still running
-                if (Injector.dontUpdate || !isLoaded)
+                /// Don't update, if onDemand is disabled
+                if (!OnDemandStorage.isRunning || !isLoaded)
                     return;
 
-                // Enable the maps
+                /// Enable the maps
                 if (OnDemandStorage.DisableBody(sphere.name))
                 {
                     isLoaded = false;
@@ -57,14 +56,14 @@ namespace Kopernicus
                 }
             }
 
-            // Enabling
+            /// Enabling
             public override void OnQuadPreBuild(PQ quad)
             {
-                // Don't update, if the Injector is still running
-                if (Injector.dontUpdate || isLoaded)
+                /// Don't update, if onDemand is disabled
+                if (!OnDemandStorage.isRunning || isLoaded)
                     return;
 
-                // Enable the maps
+                /// Enable the maps
                 if (OnDemandStorage.EnableBody(sphere.name))
                 {
                     isLoaded = true;

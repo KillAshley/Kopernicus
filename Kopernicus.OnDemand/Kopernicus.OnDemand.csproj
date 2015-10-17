@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7899401A-4065-4289-8742-9852A09B401E}</ProjectGuid>
+    <ProjectGuid>{57B23E87-99C1-4D24-871B-FCADDA7E0F13}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kopernicus</RootNamespace>
-    <AssemblyName>Kopernicus.Logging</AssemblyName>
+    <AssemblyName>Kopernicus.OnDemand</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -42,8 +42,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logger.cs" />
+    <Compile Include="CBAttributeMapSODemand.cs" />
+    <Compile Include="ILoadOnDemand.cs" />
+    <Compile Include="MapSODemand.cs" />
+    <Compile Include="OnDemandStorage.cs" />
+    <Compile Include="PQSMod_OnDemandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

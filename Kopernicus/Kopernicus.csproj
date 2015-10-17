@@ -13,7 +13,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>Distribution\GameData\Kopernicus\Plugins\</OutputPath>
+    <OutputPath>..\Distribution\Development\</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -22,7 +22,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>..\Distribution\GameData\Kopernicus\Plugins\</OutputPath>
+    <OutputPath>..\Distribution\Release\GameData\Kopernicus\Plugins\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -120,12 +120,6 @@
     <Compile Include="RuntimeUtility\MapViewFixer.cs" />
     <Compile Include="RuntimeUtility\MenuBodyChanger.cs" />
     <Compile Include="RuntimeUtility\NameChanger.cs" />
-    <Compile Include="OnDemand\CBAttributeMapSODemand.cs" />
-    <Compile Include="OnDemand\OnDemandStorage.cs" />
-    <Compile Include="OnDemand\ILoadOnDemand.cs" />
-    <Compile Include="OnDemand\MapSODemand.cs" />
-    <Compile Include="OnDemand\PQSMod_OnDemandHandler.cs" />
-    <Compile Include="OnDemand\TGAUtils.cs" />
     <Compile Include="PostInject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MaterialWrapper\PQSOceanSurfaceQuad.cs" />
@@ -182,7 +176,6 @@
     <Compile Include="Configuration\MaterialLoader\PQSProjectionAerialQuadRelativeLoader.cs" />
     <Compile Include="Configuration\MaterialLoader\PQSProjectionFallbackLoader.cs" />
     <Compile Include="Configuration\MaterialLoader\PQSProjectionSurfaceQuadLoader.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="MaterialWrapper\PQSMainShader.cs" />
     <Compile Include="Configuration\MaterialLoader\PQSMainShaderLoader.cs" />
     <Compile Include="Configuration\ModLoader\VertexColorMap.cs" />
@@ -203,6 +196,17 @@
   <ItemGroup>
     <None Include="Resources\UnlitNew.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Kopernicus.Logging\Kopernicus.Logging.csproj">
+      <Project>{7899401a-4065-4289-8742-9852a09b401e}</Project>
+      <Name>Kopernicus.Logging</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Kopernicus.OnDemand\Kopernicus.OnDemand.csproj">
+      <Project>{57b23e87-99c1-4d24-871b-fcadda7e0f13}</Project>
+      <Name>Kopernicus.OnDemand</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

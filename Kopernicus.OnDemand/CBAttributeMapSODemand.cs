@@ -1,13 +1,9 @@
 ﻿/**
  * Kopernicus Planetary System Modifier
  * ====================================
- * Created by: - Bryce C Schroeder (bryce.schroeder@gmail.com)
- * 			   - Nathaniel R. Lewis (linux.robotdude@gmail.com)
- * 
- * Maintained by: - Thomas P.
- * 				  - NathanKell
- * 
-* Additional Content by: Gravitasi, aftokino, KCreator, Padishar, Kragrathea, OvenProofMars, zengei, MrHappyFace
+ * Created by: BryceSchroeder and Teknoman117 (aka. Nathaniel R. Lewis)
+ * Maintained by: Thomas P., NathanKell and KillAshley
+ * Additional Content by: Gravitasi, aftokino, KCreator, Padishar, Kragrathea, OvenProofMars, zengei, MrHappyFace
  * ------------------------------------------------------------- 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,54 +21,67 @@
  * MA 02110-1301  USA
  * 
  * This library is intended to be used as a plugin for Kerbal Space Program
- * which is copyright 2011-2014 Squad. Your usage of Kerbal Space Program
+ * which is copyright 2011-2015 Squad. Your usage of Kerbal Space Program
  * itself is governed by the terms of its EULA, not the license above.
  * 
  * https://kerbalspaceprogram.com
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using KSP;
 using UnityEngine;
-using System.IO;
 
 namespace Kopernicus
 {
     namespace OnDemand
     {
+        /// <summary>
+        /// CBAttributeMapSO Replacement to support Texture streaming
+        /// </summary>
         public class CBAttributeMapSODemand : CBAttributeMapSO, ILoadOnDemand
         {
-            // BitPerPixels is always 4
+            /// <summary>
+            /// BitPerPixels is always 4
+            /// </summary>
             protected new const int _bpp = 4;
 
-            // Representation of the map
-            protected new Texture2D _data { get; set; }
+            /// <summary>
+            /// Representation of the map
+            /// </summary>
+            protected virtual new Texture2D _data { get; set; }
 
-            // States
-            public bool IsLoaded { get; set; }
-            public bool AutoLoad { get; set; }
+            /// <summary>
+            /// Is the map currently loaded?
+            /// </summary>
+            public virtual bool IsLoaded { get; set; }
 
-            // Path of the Texture
-            public string Path { get; set; }
+            /// <summary>
+            /// Whether the map should get loaded automatically
+            /// </summary>
+            public virtual bool AutoLoad { get; set; }
 
-            // MapDepth
+            /// <summary>
+            /// Path of the Texture
+            /// </summary>
+            public virtual string Path { get; set; }
+
+            /// <summary>
+            /// The amount of used channels
+            /// </summary>
             public new MapDepth Depth { get; set; }
 
-            // Load the Map
-            public bool Load()
+            /// <summary>
+            /// Load the Map
+            /// </summary>
+            public virtual bool Load()
             {
-                // Check if the Map is already loaded
+                /// Check if the Map is already loaded
                 if (IsLoaded)
                     return false;
 
-                // Load the Map
+                /// Load the Map
                 Texture2D map = Utility.LoadTexture(Path, false, false, false);
 
-                // If the map isn't null
+                /// If the map isn't null
                 if (map != null)
                 {
                     CreateMap(Depth, map);
@@ -81,63 +90,68 @@ namespace Kopernicus
                     return true;
                 }
 
-                // Return nothing
+                /// Return nothing
                 Debug.Log("[OD] ERROR: Failed to load CBmap " + name + " at path " + Path);
                 return false;
+
             }
 
-            // Unload the map
-            public bool Unload()
+            /// <summary>
+            /// Unload the map
+            /// </summary>
+            public virtual bool Unload()
             {
-                // We can only destroy the map, if it is loaded and initialized
-                if (!IsLoaded || !string.IsNullOrEmpty(Path))
+                /// We can only destroy the map, if it is loaded
+                Debug.Log(IsLoaded);
+                if (!IsLoaded)
                     return false;
 
-                // Nuke the map
+                /// Nuke the map
                 DestroyImmediate(_data);
 
-                // Set flags
+                /// Set flags
                 IsLoaded = false;
 
-                // Log
+                /// Log
                 Debug.Log("[OD] CBmap " + name + " disabling self. Path = " + Path);
 
-                // We're done here
+                /// We're done here
                 return true;
             }
 
-            // Create a map from a Texture2D
+            /// <summary>
+            /// Create a map from a Texture2D
+            /// </summary>
             public override void CreateMap(MapDepth depth, Texture2D tex)
             {
-                // If the Texture is null, abort
+                /// If the Texture is null, abort
                 if (tex == null)
                 {
-                    Debug.Log("[OD] ERROR: Failed to load map");
+                    Debug.Log("[OD] ERROR: Failed to load CBmap");
                     return;
                 }
 
-                // Set _data
+                /// Set _data
                 _data = tex;
 
-                // Variables
-                name = tex.name;
+                /// Variables
                 _width = tex.width;
                 _height = tex.height;
                 Depth = depth;
                 _rowWidth = _width * _bpp;
 
-                // We're compiled
+                /// We're compiled
                 _isCompiled = true;
             }
 
             public CBAttributeMapSODemand()
                 : base()
             {
-                // register here or on creation by parser?
-                // for now we'll do it on creation (i.e. elsewhere)
+                /// register here or on PQSMod creation?
+                /// for now we'll do it on creation (i.e. elsewhere)
             }
 
-            // GetAtt
+            /// GetAtt
             public override MapAttribute GetAtt(double lat, double lon)
             {
                 if (!IsLoaded)
@@ -149,7 +163,7 @@ namespace Kopernicus
                 return base.GetAtt(lat, lon);
             }
 
-            // GetPixelColor - Float
+            /// GetPixelColor - Float
             public override Color GetPixelColor(float x, float y)
             {
                 if (!IsLoaded)
@@ -172,7 +186,7 @@ namespace Kopernicus
                     coords.v);
             }
 
-            // GetPixelColor - Int
+            /// GetPixelColor - Int
             public override Color GetPixelColor(int x, int y)
             {
                 if (!IsLoaded)
@@ -184,7 +198,7 @@ namespace Kopernicus
                 return _data.GetPixel(x, y);
             }
 
-            // CompileToTexture
+            /// CompileToTexture
             public override Texture2D CompileToTexture()
             {
                 if (!IsLoaded)
@@ -196,8 +210,8 @@ namespace Kopernicus
                 return _data;
             }
 
-            // ConstructBilinearCoords from double
-            protected new BilinearCoords ConstructBilinearCoords(double x, double y)
+            /// ConstructBilinearCoords from double
+            protected virtual new BilinearCoords ConstructBilinearCoords(double x, double y)
             {
                 // Create the struct
                 BilinearCoords coords = new BilinearCoords();
@@ -224,13 +238,13 @@ namespace Kopernicus
                 return coords;
             }
 
-            // ConstructBilinearCoords from float
-            protected new BilinearCoords ConstructBilinearCoords(float x, float y)
+            /// ConstructBilinearCoords from float
+            protected virtual new BilinearCoords ConstructBilinearCoords(float x, float y)
             {
                 return ConstructBilinearCoords((double)x, (double)y);
             }
 
-            // BilinearCoords
+            /// BilinearCoords
             public struct BilinearCoords
             {
                 public double x, y;

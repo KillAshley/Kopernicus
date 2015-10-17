@@ -1,13 +1,9 @@
 ﻿/**
  * Kopernicus Planetary System Modifier
  * ====================================
- * Created by: - Bryce C Schroeder (bryce.schroeder@gmail.com)
- * 			   - Nathaniel R. Lewis (linux.robotdude@gmail.com)
- * 
- * Maintained by: - Thomas P.
- * 				  - NathanKell
- * 
-* Additional Content by: Gravitasi, aftokino, KCreator, Padishar, Kragrathea, OvenProofMars, zengei, MrHappyFace
+ * Created by: BryceSchroeder and Teknoman117 (aka. Nathaniel R. Lewis)
+ * Maintained by: Thomas P., NathanKell and KillAshley
+ * Additional Content by: Gravitasi, aftokino, KCreator, Padishar, Kragrathea, OvenProofMars, zengei, MrHappyFace
  * ------------------------------------------------------------- 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +21,7 @@
  * MA 02110-1301  USA
  * 
  * This library is intended to be used as a plugin for Kerbal Space Program
- * which is copyright 2011-2014 Squad. Your usage of Kerbal Space Program
+ * which is copyright 2011-2015 Squad. Your usage of Kerbal Space Program
  * itself is governed by the terms of its EULA, not the license above.
  * 
  * https://kerbalspaceprogram.com
@@ -38,36 +34,54 @@ namespace Kopernicus
 {
     namespace OnDemand
     {
-        // MapSO Replacement to support Texture streaming
+        /// <summary>
+        /// MapSO Replacement to support Texture streaming
+        /// </summary>
         public class MapSODemand : MapSO, ILoadOnDemand
         {
-            // BitPerPixels is always 4
+            /// <summary>
+            /// BitPerPixels is always 4
+            /// </summary>
             protected new const int _bpp = 4;
 
-            // Representation of the map
-            protected new Texture2D _data { get; set; }
+            /// <summary>
+            /// Representation of the map
+            /// </summary>
+            protected virtual new Texture2D _data { get; set; }
 
-            // States
-            public bool IsLoaded { get; set; }
-            public bool AutoLoad { get; set; }
+            /// <summary>
+            /// Is the map currently loaded?
+            /// </summary>
+            public virtual bool IsLoaded { get; set; }
 
-            // Path of the Texture
-            public string Path { get; set; }
+            /// <summary>
+            /// Whether the map should get loaded automatically
+            /// </summary>
+            public virtual bool AutoLoad { get; set; }
 
-            // MapDepth
+            /// <summary>
+            /// Path of the Texture
+            /// </summary>
+            public virtual string Path { get; set; }
+
+            /// <summary>
+            /// The amount of used channels
+            /// </summary>
             public new MapDepth Depth { get; set; }
 
-            // Load the Map
-            public bool Load()
+            /// <summary>
+            /// Load the Map
+            /// </summary>
+            public virtual bool Load()
             {
-                // Check if the Map is already loaded
+                /// Check if the Map is already loaded
                 if (IsLoaded)
                     return false;
 
-                // Load the Map
+                /// Load the Map
                 Texture2D map = Utility.LoadTexture(Path, false, false, false);
 
-                // If the map isn't null
+                /// If the map isn't null
                 if (map != null)
                 {
                     CreateMap(Depth, map);
@@ -76,64 +90,68 @@ namespace Kopernicus
                     return true;
                 }
 
-                // Return nothing
+                /// Return nothing
                 Debug.Log("[OD] ERROR: Failed to load map " + name + " at path " + Path);
                 return false;
 
             }
 
-            // Unload the map
-            public bool Unload()
+            /// <summary>
+            /// Unload the map
+            /// </summary>
+            public virtual bool Unload()
             {
-                // We can only destroy the map, if it is loaded
+                /// We can only destroy the map, if it is loaded
                 Debug.Log(IsLoaded);
                 if (!IsLoaded)
                     return false;
 
-                // Nuke the map
+                /// Nuke the map
                 DestroyImmediate(_data);
 
-                // Set flags
+                /// Set flags
                 IsLoaded = false;
 
-                // Log
+                /// Log
                 Debug.Log("[OD] map " + name + " disabling self. Path = " + Path);
 
-                // We're done here
+                /// We're done here
                 return true;
             }
 
-            // Create a map from a Texture2D
+            /// <summary>
+            /// Create a map from a Texture2D
+            /// </summary>
             public override void CreateMap(MapDepth depth, Texture2D tex)
             {
-                // If the Texture is null, abort
+                /// If the Texture is null, abort
                 if (tex == null)
                 {
                     Debug.Log("[OD] ERROR: Failed to load map");
                     return;
                 }
 
-                // Set _data
+                /// Set _data
                 _data = tex;
 
-                // Variables
+                /// Variables
                 _width = tex.width;
                 _height = tex.height;
                 Depth = depth;
                 _rowWidth = _width * _bpp;
 
-                // We're compiled
+                /// We're compiled
                 _isCompiled = true;
             }
 
             public MapSODemand()
                 : base()
             {
-                // register here or on PQSMod creation?
-                // for now we'll do it on creation (i.e. elsewhere)
+                /// register here or on PQSMod creation?
+                /// for now we'll do it on creation (i.e. elsewhere)
             }
 
-            // GetPixelByte
+            /// GetPixelByte
             public override byte GetPixelByte(int x, int y)
             {
                 // If we aren't loaded....
@@ -146,7 +164,7 @@ namespace Kopernicus
                 return (byte)(_data.GetPixel(x, y).r * Float2Byte);
             }
 
-            // GetPixelColor - Double
+            /// GetPixelColor - Double
             public override Color GetPixelColor(double x, double y)
             {
                 if (!IsLoaded)
@@ -169,7 +187,7 @@ namespace Kopernicus
                     coords.v);
             }
 
-            // GetPixelColor - Float
+            /// GetPixelColor - Float
             public override Color GetPixelColor(float x, float y)
             {
                 if (!IsLoaded)
@@ -192,7 +210,7 @@ namespace Kopernicus
                     coords.v);
             }
 
-            // GetPixelColor - Int
+            /// GetPixelColor - Int
             public override Color GetPixelColor(int x, int y)
             {
                 if (!IsLoaded)
@@ -204,7 +222,7 @@ namespace Kopernicus
                 return _data.GetPixel(x, y);
             }
 
-            // GetPixelColor32 - Double
+            /// GetPixelColor32 - Double
             public override Color GetPixelColor32(double x, double y)
             {
                 if (!IsLoaded)
@@ -227,7 +245,7 @@ namespace Kopernicus
                     coords.v);
             }
 
-            // GetPixelColor32 - Float - Honestly Squad, why are they named GetPixelColor32, but return normal Colors instead of Color32?
+            /// GetPixelColor32 - Float - Honestly Squad, why are they named GetPixelColor32, but return normal Colors instead of Color32?
             public override Color GetPixelColor32(float x, float y)
             {
                 if (!IsLoaded)
@@ -250,7 +268,7 @@ namespace Kopernicus
                     coords.v);
             }
 
-            // GetPixelColor32 - Int
+            /// GetPixelColor32 - Int
             public override Color32 GetPixelColor32(int x, int y)
             {
                 if (!IsLoaded)
@@ -262,7 +280,7 @@ namespace Kopernicus
                 return _data.GetPixel(x, y);
             }
 
-            // GetPixelFloat - Double
+            /// GetPixelFloat - Double
             public override float GetPixelFloat(double x, double y)
             {
                 if (!IsLoaded)
@@ -285,7 +303,7 @@ namespace Kopernicus
                     coords.v);
             }
 
-            // GetPixelFloat - Float
+            /// GetPixelFloat - Float
             public override float GetPixelFloat(float x, float y)
             {
                 if (!IsLoaded)
@@ -308,7 +326,7 @@ namespace Kopernicus
                     coords.v);
             }
 
-            // GetPixelFloat - Integer
+            /// GetPixelFloat - Integer
             public override float GetPixelFloat(int x, int y)
             {
                 if (!IsLoaded)
@@ -336,7 +354,7 @@ namespace Kopernicus
                 return value / (int)Depth;
             }
 
-            // GetPixelHeightAlpha - Double
+            /// GetPixelHeightAlpha - Double
             public override HeightAlpha GetPixelHeightAlpha(double x, double y)
             {
                 if (!IsLoaded)
@@ -359,7 +377,7 @@ namespace Kopernicus
                     coords.v);
             }
 
-            // GetPixelHeightAlpha - Float
+            /// GetPixelHeightAlpha - Float
             public override HeightAlpha GetPixelHeightAlpha(float x, float y)
             {
                 if (!IsLoaded)
@@ -382,7 +400,7 @@ namespace Kopernicus
                     coords.v);
             }
 
-            // GetPixelHeightAlpha - Int
+            /// GetPixelHeightAlpha - Int
             public override HeightAlpha GetPixelHeightAlpha(int x, int y)
             {
                 if (!IsLoaded)
@@ -399,7 +417,7 @@ namespace Kopernicus
                     return new HeightAlpha(pixel.r, 1f);
             }
 
-            // GreyByte
+            /// GreyByte
             public override byte GreyByte(int x, int y)
             {
                 if (!IsLoaded)
@@ -411,7 +429,7 @@ namespace Kopernicus
                 return (byte)(Float2Byte * _data.GetPixel(x, y).r);
             }
 
-            // GreyFloat
+            /// GreyFloat
             public override float GreyFloat(int x, int y)
             {
                 if (!IsLoaded)
@@ -423,7 +441,7 @@ namespace Kopernicus
                 return _data.GetPixel(x, y).grayscale;
             }
 
-            // PixelByte
+            /// PixelByte
             public override byte[] PixelByte(int x, int y)
             {
                 if (!IsLoaded)
@@ -444,7 +462,7 @@ namespace Kopernicus
                     return new byte[] { (byte)c.r, (byte)c.g, (byte)c.b, (byte)c.a };
             }
 
-            // CompileToTexture
+            /// CompileToTexture
             public override Texture2D CompileToTexture()
             {
                 if (!IsLoaded)
@@ -456,8 +474,8 @@ namespace Kopernicus
                 return _data;
             }
 
-            // ConstructBilinearCoords from double
-            protected new BilinearCoords ConstructBilinearCoords(double x, double y)
+            /// ConstructBilinearCoords from double
+            protected virtual new BilinearCoords ConstructBilinearCoords(double x, double y)
             {
                 // Create the struct
                 BilinearCoords coords = new BilinearCoords();
@@ -484,13 +502,13 @@ namespace Kopernicus
                 return coords;
             }
 
-            // ConstructBilinearCoords from float
-            protected new BilinearCoords ConstructBilinearCoords(float x, float y)
+            /// ConstructBilinearCoords from float
+            protected virtual new BilinearCoords ConstructBilinearCoords(float x, float y)
             {
                 return ConstructBilinearCoords((double)x, (double)y);
             }
 
-            // BilinearCoords
+            /// BilinearCoords
             public struct BilinearCoords
             {
                 public double x, y;

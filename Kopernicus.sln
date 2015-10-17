@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kopernicus.API", "Kopernicu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kopernicus.Logging", "Kopernicus.Logging\Kopernicus.Logging.csproj", "{7899401A-4065-4289-8742-9852A09B401E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kopernicus.OnDemand", "Kopernicus.OnDemand\Kopernicus.OnDemand.csproj", "{57B23E87-99C1-4D24-871B-FCADDA7E0F13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7899401A-4065-4289-8742-9852A09B401E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7899401A-4065-4289-8742-9852A09B401E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7899401A-4065-4289-8742-9852A09B401E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57B23E87-99C1-4D24-871B-FCADDA7E0F13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57B23E87-99C1-4D24-871B-FCADDA7E0F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57B23E87-99C1-4D24-871B-FCADDA7E0F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57B23E87-99C1-4D24-871B-FCADDA7E0F13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

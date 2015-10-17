@@ -1,13 +1,9 @@
 ﻿/**
  * Kopernicus Planetary System Modifier
  * ====================================
- * Created by: - Bryce C Schroeder (bryce.schroeder@gmail.com)
- * 			   - Nathaniel R. Lewis (linux.robotdude@gmail.com)
- * 
- * Maintained by: - Thomas P.
- * 				  - NathanKell
- * 
-* Additional Content by: Gravitasi, aftokino, KCreator, Padishar, Kragrathea, OvenProofMars, zengei, MrHappyFace
+ * Created by: BryceSchroeder and Teknoman117 (aka. Nathaniel R. Lewis)
+ * Maintained by: Thomas P., NathanKell and KillAshley
+ * Additional Content by: Gravitasi, aftokino, KCreator, Padishar, Kragrathea, OvenProofMars, zengei, MrHappyFace
  * ------------------------------------------------------------- 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +21,7 @@
  * MA 02110-1301  USA
  * 
  * This library is intended to be used as a plugin for Kerbal Space Program
- * which is copyright 2011-2014 Squad. Your usage of Kerbal Space Program
+ * which is copyright 2011-2015 Squad. Your usage of Kerbal Space Program
  * itself is governed by the terms of its EULA, not the license above.
  * 
  * https://kerbalspaceprogram.com
@@ -40,21 +36,28 @@ namespace Kopernicus
 {
     namespace OnDemand
     {
-        // Class to store OnDemand stuff
+        /// <summary>
+        /// Class to store OnDemand stuff
+        /// </summary>
         public static class OnDemandStorage
         {
-            // Lists
+            /// Lists
             public static Dictionary<string, List<ILoadOnDemand>> maps = new Dictionary<string, List<ILoadOnDemand>>();
             public static Dictionary<PQS, PQSMod_OnDemandHandler> handlers = new Dictionary<PQS, PQSMod_OnDemandHandler>();
             public static string currentBody = "";
 
-            // OnDemand flags
+            /// OnDemand flags
             public static bool useOnDemand = true;
             public static bool useOnDemandBiomes = true;
             public static bool onDemandLoadOnMissing = true;
             public static bool onDemandLogOnMissing = true;
 
-            // Add the management handler to the PQS
+            /// Current state
+            public static bool isRunning = true;
+
+            /// <summary>
+            /// Add the management handler to the PQS
+            /// </summary>
             public static void AddHandler(PQS pqsVersion)
             {
                 PQSMod_OnDemandHandler handler = new GameObject("OnDemandHandler").AddComponent<PQSMod_OnDemandHandler>();
@@ -65,22 +68,24 @@ namespace Kopernicus
                 handlers[pqsVersion] = handler;
             }
 
-            // Add a map to the map-list
+            /// <summary>
+            /// Add a map to the map-list
+            /// </summary>
             public static void AddMap(string body, ILoadOnDemand map)
             {
-                // If the map is null, abort
+                /// If the map is null, abort
                 if (map == null)
                     return;
 
-                // Create the sublist
+                /// Create the sublist
                 if (!maps.ContainsKey(body)) maps[body] = new List<ILoadOnDemand>();
 
-                // Add the map
+                /// Add the map
                 if (!maps[body].Contains(map))
                 {
                     maps[body].Add(map);
 
-                    // Log
+                    /// Log
                     Debug.Log("[OD] Adding for body " + body + " map named " + map.name + " of path = " + map.Path);
                 }
                 else
@@ -89,14 +94,16 @@ namespace Kopernicus
                 }
             }
 
-            // Remove a map from the list
+            /// <summary>
+            /// Remove a map from the list
+            /// </summary>
             public static void RemoveMap(string body, ILoadOnDemand map)
             {
-                // If the map is null, abort
+                /// If the map is null, abort
                 if (map == null)
                     return;
 
-                // If the sublist exists, remove the map
+                /// If the sublist exists, remove the map
                 if (maps.ContainsKey(body))
                 {
                     if (maps[body].Contains(map))
@@ -113,48 +120,54 @@ namespace Kopernicus
                     Debug.Log("[OD] WARNING: Trying to remove a map from a body, but the body is not known!");
                 }
 
-                // If all maps of the body are unloaded, remove the body completely
+                /// If all maps of the body are unloaded, remove the body completely
                 if (maps[body].Count == 0)
                     maps.Remove(body);
             }
 
-            // Enable a list of maps
+            /// <summary>
+            /// Enable a list of maps
+            /// </summary>
             public static void EnableMapList(List<ILoadOnDemand> maps, [Optional] List<ILoadOnDemand> exclude)
             {
-                // If the excludes are null, create an empty list
+                /// If the excludes are null, create an empty list
                 if (exclude == null)
                     exclude = new List<ILoadOnDemand>();
 
-                // Go through all maps
+                /// Go through all maps
                 for (int i = maps.Count - 1; i >= 0; --i)
                 {
-                    // If excluded...
+                    /// If excluded...
                     if (exclude.Contains(maps[i])) continue;
 
-                    // Load the map
+                    /// Load the map
                     maps[i].Load();
                 }
             }
 
-            // Disable a list of maps
+            /// <summary>
+            /// Disable a list of maps
+            /// </summary>
             public static void DisableMapList(List<ILoadOnDemand> maps, [Optional] List<ILoadOnDemand> exclude)
             {
-                // If the excludes are null, create an empty list
+                /// If the excludes are null, create an empty list
                 if (exclude == null)
                     exclude = new List<ILoadOnDemand>();
 
-                // Go through all maps
+                /// Go through all maps
                 for (int i = maps.Count - 1; i >= 0; --i)
                 {
-                    // If excluded...
+                    /// If excluded...
                     if (exclude.Contains(maps[i])) continue;
 
-                    // Load the map
+                    /// Load the map
                     maps[i].Unload();
                 }
             }
 
-            // Enable all maps of a body
+            /// <summary>
+            /// Enable all maps of a body
+            /// </summary>
             public static bool EnableBody(string body)
             {
                 if (maps.ContainsKey(body))
@@ -166,7 +179,9 @@ namespace Kopernicus
                 
             }
 
-            // Unload all maps of a body
+            /// <summary>
+            /// Unload all maps of a body
+            /// </summary>
             public static bool DisableBody(string body)
             {
                 if (maps.ContainsKey(body))
